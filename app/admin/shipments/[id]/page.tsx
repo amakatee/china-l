@@ -89,6 +89,21 @@ export default async function AdminShipmentPage({
         </div>
       </div>
 
+      {shipment.paymentProofUrl && (
+        <div className="mt-6 rounded-xl border p-6">
+          <h2 className="font-semibold">Payment proof</h2>
+
+          <a
+            href={shipment.paymentProofUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex text-sm underline"
+          >
+            View uploaded payment proof
+          </a>
+        </div>
+      )}
+
       <form
         action={updateShipmentByAdmin}
         className="mt-6 space-y-4 rounded-xl border p-6"

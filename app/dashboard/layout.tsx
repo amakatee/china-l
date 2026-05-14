@@ -15,6 +15,7 @@ export default function DashboardLayout({
           <Link href="/dashboard/shipments">Shipments</Link>
           <Link href="/dashboard/create-shipment">Create shipment</Link>
           <Link href="/dashboard/addresses">Addresses</Link>
+          <Link href="/dashboard/warehouse">Warehouse</Link>
           <Link href="/dashboard/support">Support</Link>
         </nav>
       </header>

@@ -49,9 +49,11 @@ export default async function AdminParcelPage({ params }: AdminParcelPageProps) 
             <span className="font-medium">Description:</span>{" "}
             {parcel.description || "—"}
           </p>
+
           <p>
             <span className="font-medium">Status:</span> {parcel.status}
           </p>
+
           <p>
             <span className="font-medium">Customer notes:</span>{" "}
             {parcel.customerNotes || "—"}
@@ -83,48 +85,69 @@ export default async function AdminParcelPage({ params }: AdminParcelPageProps) 
           </select>
         </div>
 
-        <div>
         <div className="grid gap-4 md:grid-cols-4">
-  <div>
-    <label className="text-sm font-medium">Weight kg</label>
-    <input
-      name="weightKg"
-      defaultValue={parcel.weightKg?.toString() ?? ""}
-      placeholder="1.2"
-      className="mt-1 w-full rounded-md border px-3 py-2"
-    />
-  </div>
+          <div>
+            <label className="text-sm font-medium">Weight kg</label>
+            <input
+              name="weightKg"
+              defaultValue={parcel.weightKg?.toString() ?? ""}
+              placeholder="1.2"
+              className="mt-1 w-full rounded-md border px-3 py-2"
+            />
+          </div>
 
-  <div>
-    <label className="text-sm font-medium">Length cm</label>
-    <input
-      name="lengthCm"
-      defaultValue={parcel.lengthCm?.toString() ?? ""}
-      placeholder="30"
-      className="mt-1 w-full rounded-md border px-3 py-2"
-    />
-  </div>
+          <div>
+            <label className="text-sm font-medium">Length cm</label>
+            <input
+              name="lengthCm"
+              defaultValue={parcel.lengthCm?.toString() ?? ""}
+              placeholder="30"
+              className="mt-1 w-full rounded-md border px-3 py-2"
+            />
+          </div>
 
-  <div>
-    <label className="text-sm font-medium">Width cm</label>
-    <input
-      name="widthCm"
-      defaultValue={parcel.widthCm?.toString() ?? ""}
-      placeholder="20"
-      className="mt-1 w-full rounded-md border px-3 py-2"
-    />
-  </div>
+          <div>
+            <label className="text-sm font-medium">Width cm</label>
+            <input
+              name="widthCm"
+              defaultValue={parcel.widthCm?.toString() ?? ""}
+              placeholder="20"
+              className="mt-1 w-full rounded-md border px-3 py-2"
+            />
+          </div>
 
-  <div>
-    <label className="text-sm font-medium">Height cm</label>
-    <input
-      name="heightCm"
-      defaultValue={parcel.heightCm?.toString() ?? ""}
-      placeholder="10"
-      className="mt-1 w-full rounded-md border px-3 py-2"
-    />
-  </div>
-</div>
+          <div>
+            <label className="text-sm font-medium">Height cm</label>
+            <input
+              name="heightCm"
+              defaultValue={parcel.heightCm?.toString() ?? ""}
+              placeholder="10"
+              className="mt-1 w-full rounded-md border px-3 py-2"
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-2">
+          <label className="flex items-center gap-2 rounded-md border p-3 text-sm">
+            <input
+              type="checkbox"
+              name="hasBattery"
+              defaultChecked={parcel.hasBattery}
+            />
+            Has battery
+          </label>
+
+          <label className="flex items-center gap-2 rounded-md border p-3 text-sm">
+            <input
+              type="checkbox"
+              name="isRestricted"
+              defaultChecked={parcel.isRestricted}
+            />
+            Restricted item
+          </label>
+        </div>
+
+        <div>
           <label className="text-sm font-medium">Operator notes</label>
           <textarea
             name="operatorNotes"

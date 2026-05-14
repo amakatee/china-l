@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { markShipmentAsPaid } from "@/actions/payment.actions";
 
 const shipmentSteps = [
   "REQUESTED",
@@ -97,13 +97,23 @@ export default async function ShipmentDetailPage({
             </p>
 
             {shipment.status === "AWAITING_PAYMENT" && (
-              <form action={markShipmentAsPaid}>
-                <input type="hidden" name="shipmentId" value={shipment.id} />
+              <Link
+                href={`/dashboard/payment/${shipment.id}`}
+                className="inline-flex rounded-md bg-black px-4 py-2 text-white"
+              >
+                Go to payment
+              </Link>
+            )}
 
-                <button className="rounded-md bg-black px-4 py-2 text-white">
-                  I have paid
-                </button>
-              </form>
+            {shipment.paymentProofUrl && (
+              <a
+                href={shipment.paymentProofUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="block text-sm underline"
+              >
+                View uploaded payment proof
+              </a>
             )}
 
             {shipment.status === "PAID" && (

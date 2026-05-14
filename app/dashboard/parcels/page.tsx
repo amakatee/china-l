@@ -51,9 +51,17 @@ export default async function ParcelsPage() {
           <tbody>
             {parcels.map((parcel) => (
               <tr key={parcel.id} className="border-b">
-                <td className="p-4 font-medium">{parcel.trackingNumber}</td>
+                <td className="p-4 font-medium">
+                  <Link
+                    href={`/dashboard/parcels/${parcel.id}`}
+                    className="underline"
+                  >
+                    {parcel.trackingNumber}
+                  </Link>
+                </td>
+
                 <td className="p-4">{parcel.description || "—"}</td>
-                <td className="p-4">{parcel.status}</td>
+                <td className="p-4">{parcel.status.replaceAll("_", " ")}</td>
 
                 <td className="p-4">
                   {parcel.weightKg ? `${parcel.weightKg.toString()} kg` : "—"}

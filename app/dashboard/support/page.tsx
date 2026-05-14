@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -53,8 +54,16 @@ export default async function SupportPage() {
         {tickets.map((ticket) => (
           <div key={ticket.id} className="rounded-xl border p-5">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="font-medium">{ticket.subject}</h2>
-              <span className="text-xs text-gray-500">{ticket.status}</span>
+              <Link
+                href={`/dashboard/support/${ticket.id}`}
+                className="font-medium underline"
+              >
+                {ticket.subject}
+              </Link>
+
+              <span className="text-xs text-gray-500">
+                {ticket.status.replaceAll("_", " ")}
+              </span>
             </div>
 
             <p className="mt-3 text-sm text-gray-600">{ticket.message}</p>

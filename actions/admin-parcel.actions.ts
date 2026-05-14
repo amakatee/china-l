@@ -36,9 +36,12 @@ export async function updateParcelByAdmin(formData: FormData) {
       lengthCm: parseDecimal(formData.get("lengthCm")),
       widthCm: parseDecimal(formData.get("widthCm")),
       heightCm: parseDecimal(formData.get("heightCm")),
+      hasBattery: formData.get("hasBattery") === "on",
+      isRestricted: formData.get("isRestricted") === "on",
     },
   });
 
   revalidatePath(`/admin/parcels/${parcelId}`);
   revalidatePath("/admin/parcels");
+  revalidatePath("/dashboard/parcels");
 }

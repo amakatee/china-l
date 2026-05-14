@@ -64,6 +64,7 @@ model User {
   parcels        Parcel[]
   shipments      Shipment[]
   supportTickets SupportTicket[]
+  supportMessages SupportMessage[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -196,6 +197,7 @@ model Shipment {
   estimatedPrice Decimal?
   finalPrice     Decimal?
   currency       String   @default("USD")
+  paymentProofUrl String?
 
   customerNotes String?
   operatorNotes String?
@@ -209,6 +211,8 @@ model Shipment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
 
 model ShipmentItem {
   id         String @id @default(cuid())
@@ -232,7 +236,21 @@ model SupportTicket {
   status  SupportTicketStatus @default(OPEN)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages SupportMessage[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model SupportMessage {
+  id       String @id @default(cuid())
+  ticketId String
+  userId   String
+
+  message  String
+
+  ticket   SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }

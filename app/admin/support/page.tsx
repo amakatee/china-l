@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -32,7 +33,13 @@ export default async function AdminSupportPage() {
           <div key={ticket.id} className="rounded-xl border p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="font-medium">{ticket.subject}</h2>
+                <Link
+                  href={`/admin/support/${ticket.id}`}
+                  className="font-medium underline"
+                >
+                  {ticket.subject}
+                </Link>
+
                 <p className="text-sm text-gray-500">{ticket.user.email}</p>
               </div>
 
