@@ -1,26 +1,94 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { LanguageSwitcher } from "@/components/common/language-switcher";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="min-h-screen">
-      <header className="border-b px-8 py-4">
-        <nav className="flex gap-6 text-sm">
-          <Link href="/dashboard">Dashboard</Link>
-          <Link href="/dashboard/parcels">Parcels</Link>
-          <Link href="/dashboard/add-parcel">Add parcel</Link>
-          <Link href="/dashboard/shipments">Shipments</Link>
-          <Link href="/dashboard/create-shipment">Create shipment</Link>
-          <Link href="/dashboard/addresses">Addresses</Link>
-          <Link href="/dashboard/warehouse">Warehouse</Link>
-          <Link href="/dashboard/support">Support</Link>
-        </nav>
-      </header>
+  const session = await auth();
 
-      {children}
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto grid min-h-screen max-w-7xl md:grid-cols-[260px_1fr]">
+        <aside className="border-r bg-white p-6">
+          <Link href="/" className="text-xl font-semibold">
+            China Logistics
+          </Link>
+
+          <p className="mt-2 text-sm text-gray-500">{session.user.email}</p>
+
+          <nav className="mt-8 space-y-2">
+            <Link
+              href="/dashboard"
+              className="block rounded-md px-4 py-3 hover:bg-gray-100"
+            >
+              Dashboard
+            </Link>
+
+            <Link
+              href="/dashboard/parcels"
+              className="block rounded-md px-4 py-3 hover:bg-gray-100"
+            >
+              My Parcels
+            </Link>
+
+            <Link
+              href="/dashboard/shipments"
+              className="block rounded-md px-4 py-3 hover:bg-gray-100"
+            >
+              My Shipments
+            </Link>
+
+            <Link
+  href="/dashboard/add-parcel"
+  className="block rounded-md px-4 py-3 hover:bg-gray-100"
+>
+  Add Parcel
+</Link>
+
+<Link
+  href="/dashboard/create-shipment"
+  className="block rounded-md px-4 py-3 hover:bg-gray-100"
+>
+  Create Shipment
+</Link>
+
+<Link
+  href="/dashboard/addresses"
+  className="block rounded-md px-4 py-3 hover:bg-gray-100"
+>
+  Addresses
+</Link>
+
+<Link
+  href="/dashboard/warehouse"
+  className="block rounded-md px-4 py-3 hover:bg-gray-100"
+>
+  Warehouse
+</Link>
+
+            <Link
+              href="/dashboard/support"
+              className="block rounded-md px-4 py-3 hover:bg-gray-100"
+            >
+              Support
+            </Link>
+            <div className="mt-4">
+  <LanguageSwitcher />
+</div>
+
+          </nav>
+        </aside>
+
+        <main>{children}</main>
+      </div>
     </div>
   );
 }

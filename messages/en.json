@@ -1,0 +1,18 @@
+{
+    "Dashboard": {
+      "label": "Dashboard",
+      "welcome": "Welcome back",
+      "description": "Manage parcels, shipments, payments, and support requests in one place.",
+      "parcels": "Parcels",
+      "shipments": "Shipments",
+      "openSupport": "Open support",
+      "myParcels": "My parcels",
+      "myParcelsDescription": "Track warehouse arrivals, inspections, and parcel status.",
+      "createShipment": "Create shipment",
+      "createShipmentDescription": "Combine parcels and create a delivery shipment.",
+      "warehouse": "Warehouse",
+      "pricing": "Pricing",
+      "addresses": "Addresses",
+      "support": "Support"
+    }
+  }
