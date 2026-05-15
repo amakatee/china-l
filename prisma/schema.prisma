@@ -32,14 +32,10 @@ enum ParcelStatus {
 
 enum ShipmentStatus {
   REQUESTED
-  PRICE_PENDING
   AWAITING_PAYMENT
-  PAID
-  PROCESSING
   SHIPPED
   DELIVERED
   CANCELLED
-  PROBLEM
 }
 
 enum SupportTicketStatus {
@@ -201,6 +197,8 @@ model Shipment {
 
   customerNotes String?
   operatorNotes String?
+  internationalTrackingNumber String?
+  carrier String?
 
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   address        Address?        @relation(fields: [addressId], references: [id])

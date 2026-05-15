@@ -10,16 +10,20 @@ type ShipmentsPageProps = {
 };
 
 function getStatusLabel(status: string) {
+  if (status === "REQUESTED") return "Packing";
+  if (status === "AWAITING_PAYMENT") return "Awaiting payment";
+  if (status === "SHIPPED") return "Shipped";
+  if (status === "DELIVERED") return "Delivered";
+  if (status === "CANCELLED") return "Cancelled";
   return status.replaceAll("_", " ");
 }
 
 function getStatusClass(status: string) {
+  if (status === "REQUESTED") return "bg-gray-100 text-gray-700";
   if (status === "AWAITING_PAYMENT") return "bg-yellow-50 text-yellow-700";
-  if (status === "PAID") return "bg-blue-50 text-blue-700";
-  if (status === "PROCESSING") return "bg-purple-50 text-purple-700";
   if (status === "SHIPPED") return "bg-green-50 text-green-700";
   if (status === "DELIVERED") return "bg-emerald-50 text-emerald-700";
-  if (status === "PROBLEM") return "bg-red-50 text-red-700";
+  if (status === "CANCELLED") return "bg-red-50 text-red-700";
   return "bg-gray-100 text-gray-700";
 }
 
@@ -54,34 +58,29 @@ export default async function ShipmentsPage({
 
   const filteredShipments = shipments.filter((shipment) => {
     if (activeStatus === "all") return true;
-    if (activeStatus === "payment")
-      return ["AWAITING_PAYMENT", "PAID"].includes(shipment.status);
-    if (activeStatus === "processing")
-      return shipment.status === "PROCESSING";
+    if (activeStatus === "packing") return shipment.status === "REQUESTED";
+    if (activeStatus === "payment") {
+      return shipment.status === "AWAITING_PAYMENT";
+    }
     if (activeStatus === "shipped") return shipment.status === "SHIPPED";
     if (activeStatus === "delivered") return shipment.status === "DELIVERED";
 
     return true;
   });
 
-  const paymentCount = shipments.filter((s) =>
-    ["AWAITING_PAYMENT", "PAID"].includes(s.status)
+  const packingCount = shipments.filter((s) => s.status === "REQUESTED").length;
+  const paymentCount = shipments.filter(
+    (s) => s.status === "AWAITING_PAYMENT"
   ).length;
-
-  const processingCount = shipments.filter(
-    (s) => s.status === "PROCESSING"
-  ).length;
-
   const shippedCount = shipments.filter((s) => s.status === "SHIPPED").length;
-
   const deliveredCount = shipments.filter(
     (s) => s.status === "DELIVERED"
   ).length;
 
   const tabs = [
     { label: "All", value: "all", count: shipments.length },
+    { label: "Packing", value: "packing", count: packingCount },
     { label: "Payment", value: "payment", count: paymentCount },
-    { label: "Processing", value: "processing", count: processingCount },
     { label: "Shipped", value: "shipped", count: shippedCount },
     { label: "Delivered", value: "delivered", count: deliveredCount },
   ];
@@ -96,15 +95,15 @@ export default async function ShipmentsPage({
               My shipments
             </h1>
             <p className="mt-2 text-gray-600">
-              Manage delivery requests and track shipping progress.
+              Manage packing, payment, shipping and delivery.
             </p>
           </div>
 
           <Link
-            href="/dashboard/create-shipment"
+            href="/dashboard/parcels?status=ready"
             className="inline-flex rounded-xl bg-black px-5 py-3 text-sm font-medium text-white"
           >
-            Create shipment
+            Pack parcels
           </Link>
         </div>
       </section>
@@ -214,14 +213,14 @@ export default async function ShipmentsPage({
             </h2>
 
             <p className="mt-2 text-gray-600">
-              Create a shipment from your ready parcels.
+              Select ready parcels and proceed to packing.
             </p>
 
             <Link
-              href="/dashboard/create-shipment"
+              href="/dashboard/parcels?status=ready"
               className="mt-5 inline-flex rounded-xl bg-black px-5 py-3 text-sm font-medium text-white"
             >
-              Create shipment
+              Pack parcels
             </Link>
           </div>
         )}

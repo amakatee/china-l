@@ -61,12 +61,26 @@ export default async function CreateShipmentPage({
       </section>
 
       <div className="mt-6">
-        <CreateShipmentForm
-          parcels={parcels}
-          addresses={addresses}
-          shippingMethods={shippingMethods}
-          preselectedParcelIds={preselectedParcelIds}
-        />
+      <CreateShipmentForm
+  parcels={parcels.map((parcel) => ({
+    id: parcel.id,
+    trackingNumber: parcel.trackingNumber,
+    description: parcel.description,
+    status: parcel.status,
+    weightKg: parcel.weightKg?.toString() ?? null,
+  }))}
+  addresses={addresses.map((address) => ({
+    id: address.id,
+    fullName: address.fullName,
+    city: address.city,
+    country: address.country,
+  }))}
+  shippingMethods={shippingMethods.map((method) => ({
+    id: method.id,
+    name: method.name,
+  }))}
+  preselectedParcelIds={preselectedParcelIds}
+/>
       </div>
     </main>
   );

@@ -113,19 +113,15 @@ export default async function AdminShipmentPage({
         <div>
           <label className="text-sm font-medium">Status</label>
           <select
-            name="status"
-            defaultValue={shipment.status}
-            className="mt-1 w-full rounded-md border px-3 py-2"
-          >
-            <option value="REQUESTED">REQUESTED</option>
-            <option value="PRICE_PENDING">PRICE_PENDING</option>
-            <option value="AWAITING_PAYMENT">AWAITING_PAYMENT</option>
-            <option value="PAID">PAID</option>
-            <option value="PROCESSING">PROCESSING</option>
-            <option value="SHIPPED">SHIPPED</option>
-            <option value="DELIVERED">DELIVERED</option>
-            <option value="CANCELLED">CANCELLED</option>
-            <option value="PROBLEM">PROBLEM</option>
+  name="status"
+  defaultValue={shipment.status}
+  className="mt-1 w-full rounded-md border px-3 py-2"
+>
+  <option value="REQUESTED">REQUESTED</option>
+  <option value="AWAITING_PAYMENT">AWAITING_PAYMENT</option>
+  <option value="SHIPPED">SHIPPED</option>
+  <option value="DELIVERED">DELIVERED</option>
+  <option value="CANCELLED">CANCELLED</option>
           </select>
         </div>
 
@@ -153,6 +149,27 @@ export default async function AdminShipmentPage({
             className="mt-1 min-h-28 w-full rounded-md border px-3 py-2"
           />
         </div>
+        <div>
+  <label className="text-sm font-medium">Carrier</label>
+  <input
+    name="carrier"
+    defaultValue={shipment.carrier ?? ""}
+    placeholder="DHL / UPS / EMS"
+    className="mt-1 w-full rounded-md border px-3 py-2"
+  />
+</div>
+
+<div>
+  <label className="text-sm font-medium">
+    International tracking number
+  </label>
+  <input
+    name="internationalTrackingNumber"
+    defaultValue={shipment.internationalTrackingNumber ?? ""}
+    placeholder="LX293847562CN"
+    className="mt-1 w-full rounded-md border px-3 py-2"
+  />
+</div>
 
         <button className="rounded-md bg-black px-4 py-2 text-white">
           Save changes

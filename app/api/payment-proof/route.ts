@@ -31,7 +31,6 @@ export async function POST(request: Request) {
     },
     data: {
       paymentProofUrl,
-      status: "PAID",
     },
   });
 

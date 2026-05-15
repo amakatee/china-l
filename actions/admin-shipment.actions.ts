@@ -20,6 +20,10 @@ export async function updateShipmentByAdmin(formData: FormData) {
   const status = String(formData.get("status"));
   const finalPriceRaw = String(formData.get("finalPrice") ?? "").trim();
   const operatorNotes = String(formData.get("operatorNotes") ?? "").trim();
+  const carrier = String(formData.get("carrier") ?? "").trim();
+  const internationalTrackingNumber = String(
+    formData.get("internationalTrackingNumber") ?? ""
+  ).trim();
 
   await prisma.shipment.update({
     where: {
@@ -28,9 +32,12 @@ export async function updateShipmentByAdmin(formData: FormData) {
     data: {
       status: status as any,
       finalPrice: finalPriceRaw ? finalPriceRaw : null,
-      operatorNotes,
+      operatorNotes: operatorNotes || null,
+      carrier: carrier || null,
+      internationalTrackingNumber: internationalTrackingNumber || null,
     },
   });
 
   revalidatePath(`/admin/shipments/${shipmentId}`);
+  revalidatePath(`/dashboard/shipments/${shipmentId}`);
 }

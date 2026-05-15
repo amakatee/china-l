@@ -44,6 +44,12 @@ export function ParcelPickerList({ parcels }: Props) {
   }, 0);
 
   function toggleParcel(parcelId: string) {
+    const parcel = parcels.find((item) => item.id === parcelId);
+
+    if (parcel?.status !== "READY_TO_SHIP") {
+      return;
+    }
+
     setSelectedIds((current) =>
       current.includes(parcelId)
         ? current.filter((id) => id !== parcelId)
@@ -61,6 +67,7 @@ export function ParcelPickerList({ parcels }: Props) {
       <section className="mt-6 grid gap-4 pb-28">
         {parcels.map((parcel) => {
           const selected = selectedIds.includes(parcel.id);
+          const canPack = parcel.status === "READY_TO_SHIP";
 
           return (
             <div
@@ -80,17 +87,23 @@ export function ParcelPickerList({ parcels }: Props) {
                   </h2>
                 </Link>
 
-                <button
-                  type="button"
-                  onClick={() => toggleParcel(parcel.id)}
-                  className={`flex h-8 w-8 items-center justify-center rounded-full border ${
-                    selected
-                      ? "border-black bg-black text-white"
-                      : "border-gray-300 bg-white"
-                  }`}
-                >
-                  {selected ? "✓" : ""}
-                </button>
+                {canPack ? (
+                  <button
+                    type="button"
+                    onClick={() => toggleParcel(parcel.id)}
+                    className={`flex h-8 w-8 items-center justify-center rounded-full border ${
+                      selected
+                        ? "border-black bg-black text-white"
+                        : "border-gray-300 bg-white"
+                    }`}
+                  >
+                    {selected ? "✓" : ""}
+                  </button>
+                ) : (
+                  <span className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-500">
+                    Not ready
+                  </span>
+                )}
               </div>
 
               <div className="mt-4 flex justify-between gap-3">
@@ -139,10 +152,12 @@ export function ParcelPickerList({ parcels }: Props) {
       <div className="fixed bottom-0 left-0 right-0 z-20 border-t bg-white p-4">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
           <div>
-            <p className="text-sm text-gray-500">Selected</p>
+            <p className="text-sm text-gray-500">Selected for packing</p>
             <p className="font-semibold text-black">
               {selectedIds.length} parcel{selectedIds.length === 1 ? "" : "s"} ·{" "}
-              {totalWeight > 0 ? `${totalWeight.toFixed(2)} kg` : "weight pending"}
+              {totalWeight > 0
+                ? `${totalWeight.toFixed(2)} kg`
+                : "select ready parcels"}
             </p>
           </div>
 
