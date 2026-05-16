@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { MarkNotificationsRead } from "@/components/notifications/mark-notifications-read";
 
 export default async function NotificationsPage() {
   const session = await auth();
@@ -21,6 +22,8 @@ export default async function NotificationsPage() {
 
   return (
     <main className="p-4 md:p-8">
+      <MarkNotificationsRead />
+
       <section className="rounded-3xl border bg-white p-6">
         <p className="text-sm text-gray-500">Dashboard</p>
 
