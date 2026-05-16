@@ -74,6 +74,7 @@ export default async function CreateShipmentPage({
     fullName: address.fullName,
     city: address.city,
     country: address.country,
+    isDefault: address.isDefault,
   }))}
   shippingMethods={shippingMethods.map((method) => ({
     id: method.id,

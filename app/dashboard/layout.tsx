@@ -17,7 +17,7 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto grid min-h-screen max-w-7xl md:grid-cols-[260px_1fr]">
-        <aside className="border-r bg-white p-6">
+        <aside className="border-r text-black bg-white p-6">
           <Link href="/" className="text-xl font-semibold">
             China Logistics
           </Link>
@@ -72,6 +72,9 @@ export default async function DashboardLayout({
   className="block rounded-md px-4 py-3 hover:bg-gray-100"
 >
   Warehouse
+</Link>
+<Link href="/dashboard/notifications">
+  Notifications
 </Link>
 
             <Link

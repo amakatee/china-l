@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 type ShipmentsPageProps = {
   searchParams: Promise<{
     status?: string;
+    q?: string;
   }>;
 };
 
@@ -27,9 +28,20 @@ function getStatusClass(status: string) {
   return "bg-gray-100 text-gray-700";
 }
 
-function getTabHref(status: string) {
-  if (status === "all") return "/dashboard/shipments";
-  return `/dashboard/shipments?status=${status}`;
+function getTabHref(status: string, q: string) {
+  const params = new URLSearchParams();
+
+  if (status !== "all") {
+    params.set("status", status);
+  }
+
+  if (q) {
+    params.set("q", q);
+  }
+
+  const query = params.toString();
+
+  return query ? `/dashboard/shipments?${query}` : "/dashboard/shipments";
 }
 
 export default async function ShipmentsPage({
@@ -41,12 +53,37 @@ export default async function ShipmentsPage({
     redirect("/login");
   }
 
-  const { status } = await searchParams;
+  const { status, q } = await searchParams;
   const activeStatus = status ?? "all";
+  const searchQuery = q?.trim() ?? "";
 
   const shipments = await prisma.shipment.findMany({
     where: {
       userId: session.user.id,
+      ...(searchQuery
+        ? {
+            OR: [
+              {
+                id: {
+                  contains: searchQuery,
+                  mode: "insensitive",
+                },
+              },
+              {
+                carrier: {
+                  contains: searchQuery,
+                  mode: "insensitive",
+                },
+              },
+              {
+                internationalTrackingNumber: {
+                  contains: searchQuery,
+                  mode: "insensitive",
+                },
+              },
+            ],
+          }
+        : {}),
     },
     include: {
       items: true,
@@ -59,9 +96,7 @@ export default async function ShipmentsPage({
   const filteredShipments = shipments.filter((shipment) => {
     if (activeStatus === "all") return true;
     if (activeStatus === "packing") return shipment.status === "REQUESTED";
-    if (activeStatus === "payment") {
-      return shipment.status === "AWAITING_PAYMENT";
-    }
+    if (activeStatus === "payment") return shipment.status === "AWAITING_PAYMENT";
     if (activeStatus === "shipped") return shipment.status === "SHIPPED";
     if (activeStatus === "delivered") return shipment.status === "DELIVERED";
 
@@ -91,9 +126,11 @@ export default async function ShipmentsPage({
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm text-gray-500">Shipments</p>
+
             <h1 className="mt-2 text-3xl font-semibold text-black">
               My shipments
             </h1>
+
             <p className="mt-2 text-gray-600">
               Manage packing, payment, shipping and delivery.
             </p>
@@ -108,11 +145,21 @@ export default async function ShipmentsPage({
         </div>
       </section>
 
+      <form className="mt-6 rounded-3xl border bg-white p-5">
+        <input
+          type="text"
+          name="q"
+          defaultValue={searchQuery}
+          placeholder="Search shipment ID, carrier, tracking number..."
+          className="w-full rounded-xl border px-4 py-3"
+        />
+      </form>
+
       <section className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-5">
         {tabs.map((tab) => (
           <Link
             key={tab.value}
-            href={getTabHref(tab.value)}
+            href={getTabHref(tab.value, searchQuery)}
             className={`rounded-2xl border p-4 ${
               activeStatus === tab.value
                 ? "border-black bg-black text-white"
@@ -126,6 +173,7 @@ export default async function ShipmentsPage({
             >
               {tab.label}
             </p>
+
             <p className="mt-1 text-2xl font-semibold">{tab.count}</p>
           </Link>
         ))}
@@ -140,6 +188,7 @@ export default async function ShipmentsPage({
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div>
                 <p className="text-sm text-gray-500">Shipment</p>
+
                 <h2 className="mt-1 text-xl font-semibold text-black">
                   {shipment.id.slice(0, 8)}
                 </h2>
@@ -154,7 +203,7 @@ export default async function ShipmentsPage({
               </span>
             </div>
 
-            <div className="mt-6 grid gap-4 text-sm md:grid-cols-4">
+            <div className="mt-6 grid gap-4 text-sm md:grid-cols-5">
               <div>
                 <p className="text-gray-500">Parcels</p>
                 <p className="mt-1 font-medium text-black">
@@ -172,16 +221,23 @@ export default async function ShipmentsPage({
               </div>
 
               <div>
-                <p className="text-gray-500">Created</p>
+                <p className="text-gray-500">Carrier</p>
                 <p className="mt-1 font-medium text-black">
-                  {shipment.createdAt.toLocaleDateString()}
+                  {shipment.carrier || "—"}
                 </p>
               </div>
 
               <div>
-                <p className="text-gray-500">Status</p>
+                <p className="text-gray-500">Tracking</p>
                 <p className="mt-1 font-medium text-black">
-                  {getStatusLabel(shipment.status)}
+                  {shipment.internationalTrackingNumber || "—"}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-gray-500">Created</p>
+                <p className="mt-1 font-medium text-black">
+                  {shipment.createdAt.toLocaleDateString()}
                 </p>
               </div>
             </div>
@@ -209,19 +265,12 @@ export default async function ShipmentsPage({
         {filteredShipments.length === 0 && (
           <div className="rounded-3xl border bg-white p-8 text-center">
             <h2 className="text-lg font-semibold text-black">
-              No shipments in this category
+              No shipments found
             </h2>
 
             <p className="mt-2 text-gray-600">
-              Select ready parcels and proceed to packing.
+              Try another search or create a shipment.
             </p>
-
-            <Link
-              href="/dashboard/parcels?status=ready"
-              className="mt-5 inline-flex rounded-xl bg-black px-5 py-3 text-sm font-medium text-white"
-            >
-              Pack parcels
-            </Link>
           </div>
         )}
       </section>

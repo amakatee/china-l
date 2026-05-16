@@ -61,6 +61,7 @@ model User {
   shipments      Shipment[]
   supportTickets SupportTicket[]
   supportMessages SupportMessage[]
+  notifications Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -249,6 +250,21 @@ model SupportMessage {
 
   ticket   SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+
+  title     String
+  message   String
+  href      String?
+
+  isRead    Boolean  @default(false)
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }

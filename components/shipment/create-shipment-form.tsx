@@ -16,6 +16,7 @@ type Address = {
   fullName: string;
   city: string;
   country: string;
+  isDefault: boolean;
 };
 
 type ShippingMethod = {
@@ -38,6 +39,8 @@ export function CreateShipmentForm({
 }: CreateShipmentFormProps) {
   const [selectedParcelIds, setSelectedParcelIds] =
     useState<string[]>(preselectedParcelIds);
+
+  const defaultAddress = addresses.find((address) => address.isDefault);
 
   const selectedParcels = useMemo(() => {
     return parcels.filter((parcel) => selectedParcelIds.includes(parcel.id));
@@ -120,12 +123,6 @@ export function CreateShipmentForm({
               </label>
             );
           })}
-
-          {parcels.length === 0 && (
-            <div className="rounded-2xl border p-5 text-sm text-gray-500">
-              No eligible parcels available.
-            </div>
-          )}
         </div>
       </section>
 
@@ -135,6 +132,7 @@ export function CreateShipmentForm({
         <select
           name="addressId"
           required
+          defaultValue={defaultAddress?.id ?? ""}
           className="mt-4 w-full rounded-xl border px-4 py-3"
         >
           <option value="">Select address</option>
