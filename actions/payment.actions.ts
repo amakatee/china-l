@@ -29,14 +29,8 @@ export async function markShipmentAsPaid(formData: FormData) {
     throw new Error("Shipment is not awaiting payment");
   }
 
-  await prisma.shipment.update({
-    where: {
-      id: shipmentId,
-    },
-    data: {
-      status: "SHIPPED",
-    },
-  });
-
+  // Manual payment proof flow:
+  // Customer does not change status.
+  // Admin reviews proof and later updates shipment status.
   revalidatePath(`/dashboard/shipments/${shipmentId}`);
 }
