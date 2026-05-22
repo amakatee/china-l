@@ -1,5 +1,5 @@
 import { signIn } from "@/auth";
-
+import Link from "next/link";
 export default function LoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center px-6">
@@ -45,6 +45,12 @@ export default function LoginPage() {
           Login
         </button>
       </form>
+      <Link
+  href="/forgot-password"
+  className="text-sm text-gray-500"
+>
+  Forgot password?
+</Link>
     </main>
   );
 }

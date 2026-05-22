@@ -34,7 +34,7 @@ export async function markShipmentAsPaid(formData: FormData) {
       id: shipmentId,
     },
     data: {
-      status: "PAID",
+      status: "SHIPPED",
     },
   });
 

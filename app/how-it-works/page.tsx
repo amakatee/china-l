@@ -4,82 +4,104 @@ const steps = [
   {
     title: "Create your account",
     description:
-      "Register and access your customer dashboard to manage parcels and shipments.",
+      "Register with Northern Fox Logistic and access your personal customer dashboard.",
   },
   {
-    title: "Get your China warehouse address",
+    title: "Get your warehouse address",
     description:
-      "Use our receiving warehouse address when ordering from Chinese marketplaces or suppliers.",
+      "Use your assigned warehouse address in China when ordering from Taobao, 1688, Alibaba, WeChat sellers, or other suppliers.",
   },
   {
     title: "Add tracking numbers",
     description:
-      "As your seller ships items, add each parcel tracking number into your dashboard.",
+      "Enter parcel tracking numbers in your dashboard so we can expect incoming deliveries.",
   },
   {
-    title: "Warehouse intake & inspection",
+    title: "Warehouse inspection",
     description:
-      "Our operators receive parcels, record weight and dimensions, inspect items, and prepare them for shipping.",
+      "Our warehouse receives, checks, weighs, and measures your parcels before marking them ready.",
   },
   {
     title: "Create shipment",
     description:
-      "Choose the parcels you want combined, select shipping method, and submit shipment request.",
+      "Select one or multiple ready parcels, choose destination address, and choose shipping method.",
   },
   {
-    title: "Pay shipping",
+    title: "Payment",
     description:
-      "Once final pricing is confirmed, upload payment proof securely through your dashboard.",
+      "Receive final shipping cost, upload payment proof, and wait for confirmation.",
+  },
+  {
+    title: "Shipment dispatch",
+    description:
+      "Once confirmed, we dispatch your shipment and provide international tracking.",
   },
   {
     title: "Delivery",
     description:
-      "Track your shipment from processing to shipped to delivered.",
+      "Track your shipment until it reaches your destination country and final delivery.",
   },
 ];
 
 export default function HowItWorksPage() {
   return (
-    <main className="mx-auto max-w-5xl px-8 py-20">
-      <div className="max-w-3xl">
-        <p className="text-sm font-medium uppercase tracking-wide text-gray-500">
-          How it works
-        </p>
+    <main className="bg-white text-black">
+      <section className="border-b bg-gray-50">
+        <div className="mx-auto max-w-6xl px-4 py-20 md:px-8">
+          <p className="text-sm uppercase tracking-wide text-gray-500">
+            Northern Fox Logistic
+          </p>
 
-        <h1 className="mt-4 text-5xl font-semibold tracking-tight">
-          Simple China parcel forwarding from purchase to delivery.
-        </h1>
+          <h1 className="mt-4 text-4xl font-semibold md:text-6xl">
+            How it works
+          </h1>
 
-        <p className="mt-6 text-lg text-gray-600">
-          Buy from Chinese marketplaces, send purchases to our warehouse, and
-          manage everything from your dashboard.
-        </p>
-      </div>
+          <p className="mt-6 max-w-3xl text-lg text-gray-600">
+            Simple China parcel forwarding from purchase to delivery.
+          </p>
+        </div>
+      </section>
 
-      <div className="mt-16 space-y-6">
-        {steps.map((step, index) => (
-          <div key={step.title} className="rounded-2xl border p-8">
-            <p className="text-sm text-gray-500">Step {index + 1}</p>
-            <h2 className="mt-2 text-xl font-semibold">{step.title}</h2>
-            <p className="mt-3 text-gray-600">{step.description}</p>
-          </div>
-        ))}
-      </div>
+      <section className="mx-auto max-w-6xl px-4 py-16 md:px-8">
+        <div className="grid gap-6">
+          {steps.map((step, index) => (
+            <div
+              key={step.title}
+              className="grid gap-4 rounded-3xl border p-6 md:grid-cols-[120px_1fr]"
+            >
+              <div>
+                <p className="text-sm text-gray-500">
+                  Step {index + 1}
+                </p>
+              </div>
 
-      <div className="mt-16 rounded-2xl bg-black p-10 text-white">
-        <h2 className="text-3xl font-semibold">Ready to start?</h2>
+              <div>
+                <h2 className="text-2xl font-semibold">{step.title}</h2>
+                <p className="mt-3 text-gray-600">{step.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
-        <p className="mt-4 max-w-2xl text-gray-300">
-          Create your account and start managing incoming China parcels today.
-        </p>
+      <section className="mx-auto max-w-6xl px-4 pb-24 md:px-8">
+        <div className="rounded-3xl bg-black p-8 text-white md:p-12">
+          <h2 className="text-3xl font-semibold">
+            Ready to start shipping?
+          </h2>
 
-        <Link
-          href="/register"
-          className="mt-8 inline-flex rounded-md bg-white px-5 py-3 text-black"
-        >
-          Create account
-        </Link>
-      </div>
+          <p className="mt-4 max-w-2xl text-gray-300">
+            Create your account and start managing parcels today.
+          </p>
+
+          <Link
+            href="/register"
+            className="mt-8 inline-flex rounded-xl bg-white px-6 py-3 text-black"
+          >
+            Create account
+          </Link>
+        </div>
+      </section>
     </main>
   );
 }

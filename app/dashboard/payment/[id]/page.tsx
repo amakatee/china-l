@@ -92,7 +92,7 @@ export default async function PaymentPage({ params }: PaymentPageProps) {
         </div>
       )}
 
-      {shipment.status === "PAID" && (
+      {shipment.status === shipment.paymentProofUrl  && (
         <div className="mt-6 rounded-xl border border-green-200 bg-green-50 p-5">
           <p className="text-sm text-green-700">
             Payment marked as paid. Waiting for operator confirmation.
